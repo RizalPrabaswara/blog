@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
@@ -23,8 +24,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/posts', function () {
-
+Route::get('/posts', [PostController::class , 'index']
     // DB::listen(function ($query) {
     //     logger($query->sql);
     // }); //tutorial untuk mendengarkan queris sql problem N+1 dan clockwork
@@ -33,18 +33,14 @@ Route::get('/posts', function () {
     // return view('posts', ['posts' => $posts]); //tutorial YamlFrontMatter Composer
 
     //return view('posts', ['posts' => Post::all()]);
-    return view('posts', [
-        'posts' => Post::latest()->get(),
-        'categories' => Category::all(),
-    ]); //tutorial menghindari lazy
-})->name('home'); //Tutorial Filesystem class
+    // return view('posts', [
+    //     //'posts' => Post::latest()->get(),
+    //     'posts' => $posts->get(),
+    //     'categories' => Category::all(),
+    // ]); //tutorial menghindari lazy
+)->name('home'); //Tutorial Filesystem class
 
-Route::get('/post/{post:slug}', function (Post $post) {
-    return view('post', [
-        'post' => $post,
-        'categories' => Category::all(),
-    ]);
-})->name('post'); //tutorial route model binding
+Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post'); //tutorial route model binding
 
 Route::get('/categories/{category:slug}', function (Category $category) {
     return view('posts', [

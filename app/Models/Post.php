@@ -13,6 +13,13 @@ class Post extends Model
 
     protected $with = ['category', 'author']; //eager load extension for N+1
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function($query, $search) {
+            $query->where('title', 'LIKE', '%' . $search . '%')->orWhere('excerpt', 'LIKE', '%' . $search . '%')->orWhere('body', 'LIKE', '%' . $search . '%');
+        });
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
