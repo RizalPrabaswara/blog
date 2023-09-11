@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SessionsController;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
@@ -24,7 +26,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/posts', [PostController::class , 'index']
+Route::get(
+    '/posts',
+    [PostController::class, 'index']
     // DB::listen(function ($query) {
     //     logger($query->sql);
     // }); //tutorial untuk mendengarkan queris sql problem N+1 dan clockwork
@@ -42,20 +46,19 @@ Route::get('/posts', [PostController::class , 'index']
 
 Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post'); //tutorial route model binding
 
-Route::get('/categories/{category:slug}', function (Category $category) {
-    return view('posts', [
-        'posts' => $category->posts,
-        'currentCategory' => $category,
-        'categories' => Category::all(),
-    ]);
-})->name('category'); //tutorial show all post associated with category
+// Route::get('/categories/{category:slug}', function (Category $category) {
+//     return view('posts', [
+//         'posts' => $category->posts,
+//         'currentCategory' => $category,
+//         'categories' => Category::all(),
+//     ]);
+// })->name('category'); //tutorial show all post associated with category
 
-Route::get('/authors/{author:username}', function (User $author) {
-    return view('posts', [
-        'posts' => $author->posts,
-        'categories' => Category::all(),
-    ]);
-})->name('author');
+// Route::get('/authors/{author:username}', function (User $author) {
+//     return view('posts.index', [
+//         'posts' => $author->posts,
+//     ]);
+// })->name('author');
 
 // Route::get('/post/{post}', function ($id) {
 //     return view('post', [
@@ -90,3 +93,11 @@ Route::get('/authors/{author:username}', function (User $author) {
 //         'post' => $post,
 //     ]);
 // })->where('post', '[A-z_\-]+'); //Tutorial Use Wildcard Constraints
+
+Route::get('register', [RegisterController::class, 'create'])->middleware('guest');
+Route::post('register', [RegisterController::class, 'store'])->middleware('guest');
+
+Route::post('logout', [SessionsController::class, 'destroy'])->middleware('auth');
+
+Route::get('login', [SessionsController::class, 'create'])->middleware('guest');
+Route::post('login', [SessionsController::class, 'store'])->middleware('guest');
