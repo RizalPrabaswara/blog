@@ -54,13 +54,24 @@
 
                     </div>
                 </div>
+
+                {{-- tutorial comment --}}
+                <section class="col-span-8 col-start-5 mt-10 space-y-6">
+                    @include('posts._add-comment')
+
+                    @foreach ($post->comments as $comment)
+                        <x-post-comment :comment="$comment" />
+                    @endforeach
+                </section>
+
             </article>
         </main>
 
     </section>
 
+</x-layout>
 
-    {{-- <article>
+{{-- <article>
         <h1>{!! $post->title !!}</h1>
 
         <p>
@@ -75,7 +86,6 @@
     </article>
 
     <a href="/posts">Go Back</a> --}}
-</x-layout>
 
 {{-- @extends('layout')
 

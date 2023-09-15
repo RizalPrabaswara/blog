@@ -11,13 +11,16 @@ class Post extends Model
 
     protected $guarded = ['id'];
 
-    protected $with = ['category', 'author']; //eager load extension for N+1
+    protected $with = ['category', 'author', 'comments']; //eager load extension for N+1
 
     public function scopeFilter($query, array $filters)
     {
-        $query->when($filters['search'] ?? false, fn ($query, $search) =>
-            $query->where(fn($query) =>
-            $query->where('title', 'LIKE', '%' . $search . '%')->orWhere('excerpt', 'LIKE', '%' . $search . '%')
+        $query->when(
+            $filters['search'] ?? false,
+            fn ($query, $search) =>
+            $query->where(
+                fn ($query) =>
+                $query->where('title', 'LIKE', '%' . $search . '%')->orWhere('excerpt', 'LIKE', '%' . $search . '%')
             )
         );
 
@@ -39,6 +42,11 @@ class Post extends Model
         //         ->whereColumn('categories.id', 'posts.category_id')
         //         ->where('categories.slug', $category))
         // Tutorial Filtering
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function category()
