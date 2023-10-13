@@ -15,8 +15,9 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('post_id')->constrained()->cascadeOnDelete(); //cara declare foreign key 2
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();;
+            //$table->foreignId('post_id')->constrained(); //cara declare foreign key 2
+            $table->foreignId('post_id');
+            $table->foreignId('user_id');
             $table->longText('body');
             $table->timestamps();
 
