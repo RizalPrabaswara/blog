@@ -40,7 +40,7 @@ class PostController extends Controller
         //     abort(403);
         // }
 
-        return view('posts.create');
+        return view('admin.posts.create');
     }
 
     public function store()

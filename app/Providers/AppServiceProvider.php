@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Services\NewsLetter;
 use MailchimpMarketing\ApiClient;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -38,5 +40,10 @@ class AppServiceProvider extends ServiceProvider
     {
         //Paginator::useTailwind();
         //Model::unguard(); jika tidak ingin menambahkan guarded
+        Model::unguard();
+
+        Gate::define('admin', function(User $user) {
+            return $user->username == 'adminsuper';
+        });
     }
 }

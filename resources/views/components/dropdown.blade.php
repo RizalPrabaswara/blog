@@ -1,6 +1,6 @@
 @props(['trigger'])
 
-<div x-data="{ show: false }" @click.away="show = false"> <!--  Tutorial Javascript Dropdown Detour -->
+<div x-data="{ show: false }" @click.away="show = false" class="relative"> <!--  Tutorial Javascript Dropdown Detour -->
     {{-- Trigger --}}
     <div @click="show = ! show">
         {{ $trigger }}
